@@ -1,18 +1,13 @@
 let request = require('./HttpRequestHandler');
+let chai = require('chai');
+let chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+chai.should();
 
-describe('Check response', function() {
+Promise.resolve(request.getResponse('statusCode')).should.eventually.equal(200, "status code is not 200");
 
-  it('Should check responce code', () => {
-    expect(request.getResponse('statusCode')).toEqual(200);
-    request.getResponse('statusCode').then((val) => {
-      console.log("status Code", val);
-    });
-  });
+Promise.resolve(request.getResponse('header')).should.eventually.have.property('content-type'
+  , 'application/json; charset=utf-8', 'content-type is not correct');
 
-  it('Should check response header', () => {
-    expect(request.getResponse('header')).toEqual(jasmine.objectContaining({
-      'content-tye': 'application/json; charset=utf-8',
-    }));
-  });
+Promise.resolve(request.getCountOfUsers()).should.eventually.equal(10, "count of users not eqyual 10");
 
-});

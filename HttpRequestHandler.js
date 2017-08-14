@@ -19,13 +19,19 @@ var HttpRequestHandler = function HttpRequestHandler() {
       if (responcePart == 'statusCode') {
         return response.statusCode;
       } else if (responcePart == 'body') {
-        return response.body;
+        return JSON.parse(response.body);
       } else if (responcePart == 'header') {
         return response.headers;
       } else {
         return response;
       }
     });
+  };
+
+  this.getCountOfUsers = function() {
+    return this.getResponse('body').then(arr => {
+      return arr.length;
+    })
   };
 
 };
